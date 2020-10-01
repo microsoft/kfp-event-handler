@@ -1,0 +1,78 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: kfp-event-handler
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: kfp-event-handler-role
+rules:
+  - apiGroups:
+      - ""
+    resources:
+      - events
+    verbs:
+      - list
+      - watch
+  - apiGroups:
+      - argoproj.io
+    resources:
+      - workflows
+    verbs:
+      - get
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: kfp-event-handler-binding
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: kfp-event-handler-role
+subjects:
+  - kind: ServiceAccount
+    name: kfp-event-handler
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kfp-event-handler
+  labels:
+    app: kfp-event-handler
+spec:  
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kfp-event-handler
+  template:
+    metadata:
+      labels:
+        app: kfp-event-handler
+    spec:
+      serviceAccountName: kfp-event-handler
+      containers:
+      - name: main
+        image: kubeflowyoacr.azurecr.io/kfp-event-handler:1.0.5
+        imagePullPolicy: Always
+        env:
+        - name: POD_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        volumeMounts:
+        - name: subscribers
+          mountPath: /subscribers
+      volumes:
+        - name: subscribers
+          configMap:
+            name: kfp-event-handler-config        
+---
+# apiVersion: v1
+# kind: ConfigMap
+# metadata:
+#   name: kfp-event-handler-config
+# data:
+#   # add entries with subscribers endpoint URI
+#   # e.g.: 
+#   # teams-notifier: http://kfpteamsnotifier-svc:8000/notify
