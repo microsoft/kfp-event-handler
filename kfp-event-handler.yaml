@@ -68,11 +68,11 @@ spec:
           configMap:
             name: kfp-event-handler-config        
 ---
-# apiVersion: v1
-# kind: ConfigMap
-# metadata:
-#   name: kfp-event-handler-config
-# data:
-#   # add entries with subscribers endpoint URI
-#   # e.g.: 
-#   # teams-notifier: http://kfpteamsnotifier-svc:8000/notify
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: kfp-event-handler-config
+data:
+  # add entries with subscribers endpoint URI
+  # e.g.: 
+  # teams-notifier: http://kfpteamsnotifier-svc:8000/notify
