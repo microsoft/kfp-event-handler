@@ -2,7 +2,7 @@
 
 This microservice is an extension to [Kubeflow Pipelines](https://github.com/kubeflow/pipelines). It notifies a list of subscribers on the Kubeflow Pipeline Run events.
 
-This repo implements (KFP Execution events)[https://github.com/kubeflow/pipelines/issues/4079] proposal and will be removed once [Kubeflow Pipelines](https://github.com/kubeflow/pipelines) provide native support of KFP execution events. 
+This repo implements [KFP Execution events](https://github.com/kubeflow/pipelines/issues/4079) proposal and will be removed once [Kubeflow Pipelines](https://github.com/kubeflow/pipelines) provide native support of the execution events. 
 
 ![kfp-event-handler](images/kfp-event-handler.png)
 
