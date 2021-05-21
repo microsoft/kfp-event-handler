@@ -2,6 +2,8 @@
 
 This microservice is an extension to [Kubeflow Pipelines](https://github.com/kubeflow/pipelines). It notifies a list of subscribers on the Kubeflow Pipeline Run events.
 
+This repo implements (KFP Execution events)[https://github.com/kubeflow/pipelines/issues/4079] proposal and will be removed once [Kubeflow Pipelines](https://github.com/kubeflow/pipelines) provide native support of KFP execution events. 
+
 ![kfp-event-handler](images/kfp-event-handler.png)
 
 When a KFP run starts it submits an Argo Workflow CRD and delegates the pipeline execution to it. Argo Workflow (v2.8.0+) produces K8s events corresponding to the execution stages of the workflow such as "Workflow Started", "Node Succeeded", "Workflow Failed", etc. KFP Event Handler watches those events in its namespace.
